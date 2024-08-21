@@ -7,6 +7,6 @@ class ventanaPrincipal(QMainWindow):
         self._setUI()
 
     def _setUI(self):
-        self.setGeometry(100,100,250,250)
-        self.setWindowTitle("Aplicativo Chido")
+        self.resize(800,600)
+        self.setWindowTitle("TIF")
         self.show()
