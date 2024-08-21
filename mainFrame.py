@@ -1,12 +1,10 @@
 from PySide6.QtWidgets import QMainWindow, QWidget, QApplication
-import sys
+from ui_mainframe import Ui_mainframe
 
-class ventanaPrincipal(QMainWindow):
+
+class ventanaPrincipal(QMainWindow,Ui_mainframe):
     def __init__(self):
         super().__init__()
-        self._setUI()
+        self.setupUi(self)
 
-    def _setUI(self):
-        self.resize(800,600)
-        self.setWindowTitle("TIF")
-        self.show()
+    
