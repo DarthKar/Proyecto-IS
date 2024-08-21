@@ -10,4 +10,3 @@ class ventanaPrincipal(QMainWindow):
         self.setGeometry(100,100,250,250)
         self.setWindowTitle("Aplicativo Chido")
         self.show()
-
