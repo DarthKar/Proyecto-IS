@@ -269,7 +269,11 @@ class formularioAddPlato(QDialog,Ui_AgregarPlato):
     def acep(self):
         nombrePlato = self.nombrePlatoIngrediente.text()
         precioPlato = (self.precioPlatoIngrediente.text())
-        if nombrePlato!="" and precioPlato!="":
+        if len(nombrePlato.split())!=1:
+            QMessageBox.information(self,"Informacion","se debe usar _ en lugar de espacios")
+
+        else:
+            if nombrePlato!="" and precioPlato!="":
                 BaseDatos.agregarPlatoConIngredientes(nombrePlato,float(precioPlato),self.listaIngredientesTotal)
                 QMessageBox.information(self,"Informacion","Se completo la creacion")
     

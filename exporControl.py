@@ -104,5 +104,3 @@ class exportarControl():
          QMessageBox.information(None, "Informacion", "Se genero con exito el archivo")
       except Exception as e:
          QMessageBox.warning(None, "Error", f"Ocurrio un error en la generacion del archivo: {str(e)}")
-
-

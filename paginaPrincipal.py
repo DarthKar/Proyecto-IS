@@ -15,7 +15,7 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
 
-        self.caja = False
+        self.caja = True
         self.setupUi(self)
         self.setWindowTitle("Chido TIF")
         self.setWindowFlag(Qt.WindowMaximizeButtonHint, False)
@@ -34,7 +34,7 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
 
         self.mostrar_dashboard()
         self.crearTablaOrdenes()
-        self.cargar_estado()
+        #self.cargar_estado()
         self.listaReceta.hide()
         self.tablaPlatosInv.hide()
         self.labelInvenDis_2.hide()
@@ -59,7 +59,7 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
 
         # Logica exportar 
         self.botonGenInv.clicked.connect(self.exportarInv)
-        self.botonGenVentas.clicked.connect(self.exportarVen)
+        #self.botonGenVentas.clicked.connect(self.exportarVen) 
 
         # Conectores ventas
         self.tablaOrdenes.cellDoubleClicked.connect(self.verOrden)
@@ -235,7 +235,8 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
         for _ in valores:
             nombre = _[0]
             cantidad = _[1]
-            self.listaReceta.addItem(f"{nombre} ------ {cantidad}")
+            unidad = _[2]
+            self.listaReceta.addItem(f"{nombre}------{cantidad}-----{unidad}")
 
     def buscarEnBase(self):
         if self.tableWidget.isHidden():

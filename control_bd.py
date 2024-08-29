@@ -117,7 +117,11 @@ class BaseDatos():
         db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
-        datos = f"INSERT INTO Inventario VALUES('{instruccion[0]}', {instruccion[1]}, '{instruccion[2]}')"
+        
+        # Normalizar el nombre
+        nombre_normalizado = instruccion[0].capitalize()
+        
+        datos = f"INSERT INTO Inventario VALUES('{nombre_normalizado}', {instruccion[1]}, '{instruccion[2]}')"
         cursor.execute(datos)
         conn.commit()
         conn.close()
@@ -172,12 +176,17 @@ class BaseDatos():
         db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
-        datos = f"SELECT * FROM Inventario WHERE nombre LIKE '{pista}%'"
+
+        # Normalizar la pista de búsqueda
+        pista_normalizada = pista.capitalize()
+
+        datos = f"SELECT * FROM Inventario WHERE nombre LIKE '{pista_normalizada}%'"
         cursor.execute(datos)
         valores = cursor.fetchall()
         conn.commit()
         conn.close()
         return valores
+
     
     def buscarIngredientes(pista):
         db_path = resource_path("Inventario.db")
@@ -196,7 +205,11 @@ class BaseDatos():
         db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
-        datos = f"SELECT * FROM Inventario WHERE nombre = '{pista}'"
+
+        # Normalizar la pista de búsqueda
+        pista_normalizada = pista.capitalize()
+
+        datos = f"SELECT * FROM Inventario WHERE nombre = '{pista_normalizada}'"
         cursor.execute(datos)
         valores = cursor.fetchone()
         conn.commit()
@@ -228,7 +241,11 @@ class BaseDatos():
         db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
-        datos = f"SELECT COUNT(*) FROM Inventario WHERE nombre = '{pista}'"
+    
+        # Normalizar la pista de búsqueda
+        pista_normalizada = pista.capitalize()
+        
+        datos = f"SELECT COUNT(*) FROM Inventario WHERE nombre = '{pista_normalizada}'"
         cursor.execute(datos)
         resultado = cursor.fetchone()[0]
         conn.close()
@@ -420,17 +437,21 @@ class BaseDatos():
             datos_plato = "INSERT INTO Pedido (id_orden, nombre, precioUni) VALUES (?, ?, ?)"
             lista_platos = []
             for plato in platos:
-                nombre_plato = plato
+                # Normalizar el nombre del plato
+                nombre_plato = plato.capitalize()
 
-                # Obtener el precio del plato
+                # Buscar el plato en la base de datos
                 cursor.execute("SELECT precioUni FROM Platos WHERE nombre = ?", (nombre_plato,))
                 precio_unitario = cursor.fetchone()
+
                 if precio_unitario:
                     lista_platos.append((id_orden, nombre_plato, precio_unitario[0]))
                 else:
                     print(f"Error: El plato '{nombre_plato}' no existe en la tabla Platos.")
+                    print(nombre_plato,platos)
                     conn.rollback()
                     return
+
 
                 # Actualizar el inventario restando los ingredientes usados
                 cursor.execute("SELECT ingrediente_nombre, cantidad FROM PlatoIngredientes WHERE plato_nombre = ?", (nombre_plato,))
@@ -456,16 +477,18 @@ class BaseDatos():
         finally:
             conn.close()
 
+
     def obtenerReceta(plato_nombre):
         db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         try:
             cursor.execute(
-                """SELECT ingrediente_nombre, cantidad 
-                   FROM PlatoIngredientes 
-                   WHERE plato_nombre = ?""",
-                (plato_nombre,)
+                """SELECT pi.ingrediente_nombre, pi.cantidad, i.medido_en 
+                   FROM PlatoIngredientes pi
+                   JOIN Inventario i ON UPPER(pi.ingrediente_nombre) = UPPER(i.nombre)
+                   WHERE UPPER(pi.plato_nombre) = UPPER(?)""",
+                (plato_nombre.upper(),)
             )
             receta = cursor.fetchall()
             conn.commit()
@@ -474,7 +497,7 @@ class BaseDatos():
             receta = []
         finally:
             conn.close()
-        
+
         return receta
 
     def registrarOrden(precioTotal):
