@@ -2,8 +2,10 @@ import sqlite3 as sql
 import os
 import sys
 from datetime import datetime
+
 def resource_path(relative_path):
-    try: #Logica para encontrar la base de datos en el build del programa
+    """Logica para conseguir la ruta del archivo de la bd"""
+    try:
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
@@ -11,31 +13,31 @@ def resource_path(relative_path):
 
 class BaseDatos():
     @staticmethod
-    def CrearBd():
-        db_path = resource_path("BaseDatos.db")
+    def CrearBD():
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         conn.commit()
         conn.close()
 
-
-
-    #creacion de tablas
+    # Creación de las tablas
     @staticmethod
-    def crearTablaInv():
-        db_path = resource_path("BaseDatos.db")
+    def createTablaInv():
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         cursor.execute(
             """CREATE TABLE IF NOT EXISTS Inventario (
-            nombre TEXT,
-            cantidad REAL,
-            medido_en TEXT
+                nombre TEXT,
+                cantidad REAL,
+                medido_en TEXT
             )"""
         )
-    
+        conn.commit()
+        conn.close()
+
     @staticmethod
     def createTablaVen():
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         cursor.execute(
@@ -49,7 +51,7 @@ class BaseDatos():
 
     @staticmethod
     def createTablaPlat():
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         cursor.execute( """CREATE TABLE IF NOT EXISTS Pedido (
@@ -76,32 +78,86 @@ class BaseDatos():
         conn.commit()
         conn.close()
 
-    
-    # Metodos de inventario
     @staticmethod
-    def insertarElemento(instruccion):
-        db_path = resource_path("BaseDatos.db")
+    def createTablaEdiciones():
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
-        datos = f"INSERT INTO Inventario VALUES ('{instruccion[0]}', {instruccion[1]}, '{instruccion[2]}')"
+        cursor.execute(
+            """CREATE TABLE IF NOT EXISTS Registro (
+                fecha TEXT,
+                hora TEXT,
+                desc TEXT
+            )"""
+        )
+        conn.commit()
+        conn.close()
+
+    @staticmethod
+    def createTablaPlatoIngredientes():
+        db_path = resource_path("Inventario.db")
+        conn = sql.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute(
+            """CREATE TABLE IF NOT EXISTS PlatoIngredientes (
+                plato_nombre TEXT,
+                ingrediente_nombre TEXT,
+                cantidad REAL,
+                PRIMARY KEY (plato_nombre, ingrediente_nombre),
+                FOREIGN KEY (plato_nombre) REFERENCES Platos(nombre),
+                FOREIGN KEY (ingrediente_nombre) REFERENCES Inventario(nombre)
+            )"""
+        )
+        conn.commit()
+        conn.close()
+
+    # Métodos de inventario
+    @staticmethod
+    def insertarElemento(instruccion):
+        db_path = resource_path("Inventario.db")
+        conn = sql.connect(db_path)
+        cursor = conn.cursor()
+        datos = f"INSERT INTO Inventario VALUES('{instruccion[0]}', {instruccion[1]}, '{instruccion[2]}')"
         cursor.execute(datos)
         conn.commit()
         conn.close()
 
     @staticmethod
     def leerFilas():
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
-        datos= "SELECT * FROM Inventario"
+        datos = "SELECT * FROM Inventario"
         cursor.execute(datos)
         valores = cursor.fetchall()
+        conn.commit()
+        conn.close()
+        return valores
+    
+    def leerIngredientes():
+        db_path = resource_path("Inventario.db")
+        conn = sql.connect(db_path)
+        cursor = conn.cursor()
+        datos = "SELECT nombre, medido_en FROM Inventario"
+        cursor.execute(datos)
+        valores = cursor.fetchall()
+        conn.commit()
+        conn.close()
+        return valores
+
+    @staticmethod
+    def insertarElementosVarios(listaInstruccion):
+        db_path = resource_path("Inventario.db")
+        conn = sql.connect(db_path)
+        cursor = conn.cursor()
+        datos = "INSERT INTO Inventario VALUES(?, ?, ?)"
+        cursor.executemany(datos, listaInstruccion)
         conn.commit()
         conn.close()
 
     @staticmethod
     def leerEnOrden(field):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = f"SELECT * FROM Inventario ORDER BY {field}"
@@ -113,7 +169,7 @@ class BaseDatos():
 
     @staticmethod
     def buscarEnBd(pista):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = f"SELECT * FROM Inventario WHERE nombre LIKE '{pista}%'"
@@ -122,20 +178,9 @@ class BaseDatos():
         conn.commit()
         conn.close()
         return valores
-
-    @staticmethod
-    def insertarElementosVarios(listaInstruccion):
-        db_path = resource_path("BaseDatos.db")
-        conn = sql.connect(db_path)
-        cursor = conn.cursor()
-        datos = "INSERT INTO Inventario VALUES(?, ?, ?)"
-        cursor.executemany(datos, listaInstruccion)
-        conn.commit()
-        conn.close()
-
-    @staticmethod
+    
     def buscarIngredientes(pista):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = f"SELECT nombre, medido_en FROM Inventario WHERE nombre LIKE '{pista}%'"
@@ -144,10 +189,11 @@ class BaseDatos():
         conn.commit()
         conn.close()
         return valores
-    
+        
+
     @staticmethod
     def buscarEnBdUnic(pista):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = f"SELECT * FROM Inventario WHERE nombre = '{pista}'"
@@ -156,10 +202,10 @@ class BaseDatos():
         conn.commit()
         conn.close()
         return valores
-    
+
     @staticmethod
     def actualizarBd(instruccion):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = f"UPDATE Inventario SET cantidad = {instruccion[1]} WHERE nombre = '{instruccion[0]}'"
@@ -169,7 +215,7 @@ class BaseDatos():
 
     @staticmethod
     def borrarBd(instruccion):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = f"DELETE FROM Inventario WHERE nombre = '{instruccion}'"
@@ -179,7 +225,7 @@ class BaseDatos():
 
     @staticmethod
     def existeEnLaBase(pista):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = f"SELECT COUNT(*) FROM Inventario WHERE nombre = '{pista}'"
@@ -191,7 +237,7 @@ class BaseDatos():
     # Métodos de registros
     @staticmethod
     def guardarEdicion(instruccion):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = "INSERT INTO Registro VALUES (?, ?, ?)"
@@ -201,7 +247,7 @@ class BaseDatos():
 
     @staticmethod
     def ultimaEd():
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = "SELECT fecha, hora FROM Registro ORDER BY fecha DESC, hora DESC LIMIT 1"
@@ -217,7 +263,7 @@ class BaseDatos():
 
     @staticmethod
     def leerRegistros():
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = "SELECT * FROM Registro ORDER BY hora DESC"
@@ -226,11 +272,11 @@ class BaseDatos():
         conn.commit()
         conn.close()
         return valores
-    
-      # Metodos Ventas
+
+    # Metodos Ventas
     @staticmethod
     def insertarElementoPlatos(instruccion):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = f"INSERT INTO Platos VALUES('{instruccion[0]}', {instruccion[1]})"
@@ -240,7 +286,7 @@ class BaseDatos():
 
     @staticmethod
     def borrarOrden(instruccion):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         try:
@@ -258,7 +304,7 @@ class BaseDatos():
 
     @staticmethod
     def agregarPlatoConIngredientes(plato, precio, ingredientes):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
 
@@ -278,7 +324,7 @@ class BaseDatos():
 
     @staticmethod
     def datosOrden(id):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         cursor.execute("""SELECT * FROM Pedido WHERE id_orden = ? """, id)
@@ -289,7 +335,7 @@ class BaseDatos():
 
     @staticmethod
     def actualizarVal(num, horaVal):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = f"""UPDATE OrdenInfo SET hora_validacion = ? WHERE id_orden = ?"""
@@ -299,7 +345,7 @@ class BaseDatos():
 
     @staticmethod
     def leerPlatos():
-        db = resource_path("BaseDatos.db")
+        db = resource_path("Inventario.db")
         conn = sql.connect(db)
         cursor = conn.cursor()
         cursor.execute("""SELECT * FROM Platos""")
@@ -310,7 +356,7 @@ class BaseDatos():
 
     @staticmethod
     def leerOrdenes():
-        db = resource_path("BaseDatos.db")
+        db = resource_path("Inventario.db")
         conn = sql.connect(db)
         cursor = conn.cursor()
         cursor.execute("""SELECT * FROM OrdenInfo""")
@@ -321,7 +367,7 @@ class BaseDatos():
 
     @staticmethod
     def buscarEnPlatos(pista):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = "SELECT * FROM Platos WHERE nombre LIKE ?"
@@ -333,7 +379,7 @@ class BaseDatos():
 
     @staticmethod
     def existeEnPlatos(pista):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         datos = f"SELECT COUNT(*) FROM Inventario WHERE nombre = '{pista}'"
@@ -344,7 +390,7 @@ class BaseDatos():
 
     @staticmethod
     def registrarVenta(platos):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
 
@@ -411,7 +457,7 @@ class BaseDatos():
             conn.close()
 
     def obtenerReceta(plato_nombre):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         try:
@@ -432,7 +478,7 @@ class BaseDatos():
         return receta
 
     def registrarOrden(precioTotal):
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
 
@@ -468,7 +514,7 @@ class BaseDatos():
 
     @staticmethod
     def eliminar():
-        db_path = resource_path("BaseDatos.db")
+        db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
         cursor.execute("DROP TABLE IF EXISTS OrdenInfo")
@@ -479,4 +525,4 @@ class BaseDatos():
         cursor.execute("DROP TABLE IF EXISTS Platos")
         cursor.execute("DROP TABLE IF EXISTS PlatoIngredientes")
         conn.commit()
-        conn.close()        
+        conn.close()

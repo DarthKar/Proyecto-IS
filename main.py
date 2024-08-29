@@ -1,8 +1,8 @@
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QMainWindow
+from paginaPrincipal import paginaPrincipal
 import sys
-from mainFrame import ventanaPrincipal
 
 app = QApplication(sys.argv)
-ventanaprincipal = ventanaPrincipal()
-ventanaprincipal.show()
+ventanaPrincipal = paginaPrincipal()
+ventanaPrincipal.show()
 app.exec()
