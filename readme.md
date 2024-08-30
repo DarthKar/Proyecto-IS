@@ -21,10 +21,12 @@ Aplicacion de facturacion, inventario y transacciones
 
 **se puede clonar el repositorio de github y en visual studio, copiar y pegar el siguiente codigo en la consola**
 
-
+ejecutar primero
 ```bash
-  pip install pyinstaller #necesario para el comando que genera el ejecutable
-  
+  pip install pyinstaller 
+  ```
+luego 
+```bash
   pyinstaller --noconfirm --onedir --windowed --icon "invoice.ico" --add-data "addPlatoAc_ui.py;." --add-data "control_bd.py;." --add-data "dialogoAgregarPlatos.py;." --add-data "dialogoOrden_ui.py;." --add-data "estado.json;." --add-data "exporControl.py;." --add-data "formBorrarInv_ui.py;." --add-data "formEditarInv_ui.py;." --add-data "formularioAI_ui.py;." --add-data "formularioControl.py;." --add-data "Inventario.db;." --add-data "paginaPrincipal.py;." --add-data "paginaPrincipal_ui.py;." --add-data "recursos_rc.py;." --add-data "recursos_rc;recursos_rc/" --add-data "build;build/" "main.py"
 
 ```
