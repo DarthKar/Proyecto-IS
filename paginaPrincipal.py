@@ -1,6 +1,6 @@
 from paginaPrincipal_ui import Ui_MainWindow
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QTableWidgetItem, QMessageBox, QWidget
-from control_bd import BaseDatos
+from control_bd import BaseDatos 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QSizePolicy
 from formularioControl import formularioAIControl, formularioDEControl, formularioREControl, formularioOrden, formularioAddPlato
@@ -66,7 +66,7 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
         self.genVal.clicked.connect(self.validarOrden)
 
         # Conectores ajustes
-        self.botonStatusCaja.clicked.connect(self.cambiar_estado)
+        #self.botonStatusCaja.clicked.connect(self.cambiar_estado)
         self.botonAgregarPlatos.clicked.connect(self.formularioAddPlato)
 
     def mostrar_dashboard(self):

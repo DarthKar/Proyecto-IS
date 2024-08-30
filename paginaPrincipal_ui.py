@@ -895,7 +895,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label_2.setText("")
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"CHIDO", None))
-        self.Dashboard_boton_exp.setText(QCoreApplication.translate("MainWindow", u"DashBoard", None))
+        self.Dashboard_boton_exp.setText(QCoreApplication.translate("MainWindow", u"Ordenes", None))
         self.Inventario_boton_exp.setText(QCoreApplication.translate("MainWindow", u"Inventario", None))
         self.Exportar_boton_exp.setText(QCoreApplication.translate("MainWindow", u"Exportar", None))
         self.Ajustes_boton_exp.setText(QCoreApplication.translate("MainWindow", u"Ajustes", None))

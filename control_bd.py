@@ -1,10 +1,11 @@
 import sqlite3 as sql
 import os
 import sys
+import shutil
 from datetime import datetime
 
 def resource_path(relative_path):
-    """Logica para conseguir la ruta del archivo de la bd"""
+    """Obtiene la ruta del archivo de la base de datos."""
     try:
         base_path = sys._MEIPASS
     except Exception:
@@ -549,3 +550,4 @@ class BaseDatos():
         cursor.execute("DROP TABLE IF EXISTS PlatoIngredientes")
         conn.commit()
         conn.close()
+BaseDatos.generarTodo()
