@@ -23,7 +23,9 @@ Aplicacion de facturacion, inventario y transacciones
 
 ejecutar primero
 ```bash
-  pip install pyinstaller 
+  pip install pyinstaller
+  pip install openpyxl
+  pip install sqlite3
   ```
 luego 
 ```bash
