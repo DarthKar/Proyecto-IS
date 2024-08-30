@@ -34,7 +34,7 @@ luego
 ```
     
 ## 🔗 Link de Google Drive con .rar de la app
-![Static Badge](https://img.shields.io/badge/Google-Drive-brightgreen?style=for-the-badge)
+![Static Badge](https://img.shields.io/badge/Google-Drive-brightgreen?style=for-the-badge)(https://drive.google.com/drive/folders/1zoSKRpFsc0OLEEUo7WeTwHGpCTneCezx?usp=drive_link)
 
 Para abrir la aplicacion se debe ejecutar el archivo llamado TIF-Chido dentro de la carpeta app
 
