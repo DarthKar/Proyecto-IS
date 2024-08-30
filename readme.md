@@ -34,7 +34,7 @@ luego
 ```
     
 ## 🔗 Link de Google Drive con .rar de la app
-[![Google Drive](https://img.shields.io/badge/Google-Drive-brightgreen?style=for-the-badge)](https://drive.google.com/drive/folders/1zoSKRpFsc0OLEEUo7WeTwHGpCTneCezx?usp=drive_link)
+[![Google Drive](https://img.shields.io/badge/Google-Drive-brightgreen?style=for-the-badge)]([https://drive.google.com/drive/folders/1zoSKRpFsc0OLEEUo7WeTwHGpCTneCezx?usp=drive_link](https://drive.google.com/drive/folders/1zoSKRpFsc0OLEEUo7WeTwHGpCTneCezx?usp=sharing))
 
 
 Para abrir la aplicacion se debe ejecutar el archivo llamado TIF-Chido dentro de la carpeta dist/main luego de descargar la carpeta completa
