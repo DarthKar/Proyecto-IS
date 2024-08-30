@@ -32,8 +32,9 @@ luego
   pyinstaller --noconfirm --onedir --windowed --icon "invoice.ico" --add-data "addPlatoAc_ui.py;." --add-data "control_bd.py;." --add-data "dialogoAgregarPlatos.py;." --add-data "dialogoOrden_ui.py;." --add-data "estado.json;." --add-data "exporControl.py;." --add-data "formBorrarInv_ui.py;." --add-data "formEditarInv_ui.py;." --add-data "formularioAI_ui.py;." --add-data "formularioControl.py;." --add-data "Inventario.db;." --add-data "paginaPrincipal.py;." --add-data "paginaPrincipal_ui.py;." --add-data "recursos_rc.py;." --add-data "recursos_rc;recursos_rc/" --add-data "build;build/" "main.py"
 
 ```
-    
+
 ## 🔗 Link de Google Drive con .rar de la app
+### **Abrir con el correo institucional**
 [![Google Drive](https://img.shields.io/badge/Google-Drive-brightgreen?style=for-the-badge)](https://drive.google.com/drive/folders/1zoSKRpFsc0OLEEUo7WeTwHGpCTneCezx?usp=drive_link)
 
 
