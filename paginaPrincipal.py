@@ -34,7 +34,7 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
 
         self.mostrar_dashboard()
         self.crearTablaOrdenes()
-        #self.cargar_estado()
+        self.cargar_estado()
         self.listaReceta.hide()
         self.tablaPlatosInv.hide()
         self.labelInvenDis_2.hide()
@@ -59,14 +59,14 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
 
         # Logica exportar 
         self.botonGenInv.clicked.connect(self.exportarInv)
-        #self.botonGenVentas.clicked.connect(self.exportarVen) 
+        self.botonGenVentas.clicked.connect(self.exportarVen) 
 
         # Conectores ventas
         self.tablaOrdenes.cellDoubleClicked.connect(self.verOrden)
         self.genVal.clicked.connect(self.validarOrden)
 
         # Conectores ajustes
-        #self.botonStatusCaja.clicked.connect(self.cambiar_estado)
+        self.botonStatusCaja.clicked.connect(self.cambiar_estado)
         self.botonAgregarPlatos.clicked.connect(self.formularioAddPlato)
 
     def mostrar_dashboard(self):
@@ -392,6 +392,7 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
             return
         _ = formularioOrden()
         _.generarFormulario()
+        self.refrescarTabla()
 
     def formularioAddPlato(self):
         _ = formularioAddPlato()
