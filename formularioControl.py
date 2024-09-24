@@ -3,6 +3,7 @@ from dialogoAgregarPlatos import Ui_AgregarPlato
 from addPlatoAc_ui import Ui_ingredienteCan
 from formBorrarInv_ui import Ui_BorrarInv
 from formEditarInv_ui import Ui_EditarInv
+from ui_borrarPlato import Ui_borrarPlato
 from dialogoOrden_ui import Ui_orden
 from PySide6.QtWidgets import QDialog, QMessageBox, QTableWidgetItem, QWidget
 from control_bd import BaseDatos
@@ -279,3 +280,42 @@ class formularioAddPlato(QDialog,Ui_AgregarPlato):
     
     def reje(self):
         pass
+
+class formularioBorrarPlato(QDialog,Ui_borrarPlato):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.buscarBotonDE.clicked.connect(self.buscar)
+        self.botonesBorrarPlato.accepted.connect(self.acep)
+        self.botonesBorrarPlato.rejected.connect(self.reje)
+
+
+
+    def acep(self):
+        _ = BaseDatos.borrarPlato(self.LineEditBuscarDE.text())
+        if _: 
+            QMessageBox.information(self,"Informacion",f"Se borro {self.LineEditBuscarDE.text()} exitosamente")
+        else:
+            QMessageBox.information(self,"Informacion",f"El Plato '{self.LineEditBuscarDE.text()}' no existe en la base de datos")
+    def reje(self):
+        QMessageBox.information(self,"Informacion", "Se cancelo la operacion")
+
+    def buscar(self):
+        if BaseDatos.existeEnPlatos(self.LineEditBuscarDE.text()):
+            self.listWidget.clear()
+            valores = BaseDatos.obtenerReceta(self.LineEditBuscarDE.text())
+            for _ in valores:
+                nombre = _[0]
+                cantidad = _[1]
+                unidad = _[2]
+                self.listWidget.addItem(f"{nombre}------{cantidad}-----{unidad}")
+            QMessageBox.information(self,"Informacion","Se completo la busqueda")
+        else:
+            QMessageBox.information(self,"Informacion",f"El Plato '{self.LineEditBuscarDE.text()}' no existe en la base de datos")
+
+
+    def generarFormulario(self):
+        self.exec_()
+
+    
+    

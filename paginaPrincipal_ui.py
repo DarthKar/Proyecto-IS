@@ -1,4 +1,3 @@
-
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
@@ -30,7 +29,7 @@ class Ui_MainWindow(object):
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.nombre_iconos_widget = QWidget(self.centralwidget)
         self.nombre_iconos_widget.setObjectName(u"nombre_iconos_widget")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.nombre_iconos_widget.sizePolicy().hasHeightForWidth())
@@ -168,7 +167,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_6)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 289, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer_2 = QSpacerItem(20, 289, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_2.addItem(self.verticalSpacer_2)
 
@@ -189,7 +188,7 @@ class Ui_MainWindow(object):
 
         self.solo_iconos_widget = QWidget(self.centralwidget)
         self.solo_iconos_widget.setObjectName(u"solo_iconos_widget")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.solo_iconos_widget.sizePolicy().hasHeightForWidth())
@@ -270,7 +269,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addLayout(self.verticalLayout)
 
-        self.verticalSpacer = QSpacerItem(20, 268, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 268, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_3.addItem(self.verticalSpacer)
 
@@ -286,7 +285,7 @@ class Ui_MainWindow(object):
 
         self.menu_principal = QWidget(self.centralwidget)
         self.menu_principal.setObjectName(u"menu_principal")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.menu_principal.sizePolicy().hasHeightForWidth())
@@ -296,7 +295,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.encabezado_widget = QWidget(self.menu_principal)
         self.encabezado_widget.setObjectName(u"encabezado_widget")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.encabezado_widget.sizePolicy().hasHeightForWidth())
@@ -318,7 +317,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addWidget(self.BotonMenuDesp)
 
-        self.horizontalSpacer_3 = QSpacerItem(152, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer_3 = QSpacerItem(152, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_4.addItem(self.horizontalSpacer_3)
 
@@ -343,7 +342,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addLayout(self.horizontalLayout)
 
-        self.horizontalSpacer_4 = QSpacerItem(152, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer_4 = QSpacerItem(152, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_4.addItem(self.horizontalSpacer_4)
 
@@ -532,7 +531,7 @@ class Ui_MainWindow(object):
         self.lineEditNOrden = QLineEdit(self.DashBoar_page)
         self.lineEditNOrden.setObjectName(u"lineEditNOrden")
         self.lineEditNOrden.setGeometry(QRect(140, 230, 71, 21))
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy4.setHorizontalStretch(10)
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.lineEditNOrden.sizePolicy().hasHeightForWidth())
@@ -579,7 +578,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setContentsMargins(10, 0, 0, 0)
         self.editarInventarioBoton = QPushButton(self.layoutWidget1)
         self.editarInventarioBoton.setObjectName(u"editarInventarioBoton")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy5.setHorizontalStretch(0)
         sizePolicy5.setVerticalStretch(0)
         sizePolicy5.setHeightForWidth(self.editarInventarioBoton.sizePolicy().hasHeightForWidth())
@@ -610,7 +609,7 @@ class Ui_MainWindow(object):
 
         self.addInventarioBoton = QPushButton(self.layoutWidget1)
         self.addInventarioBoton.setObjectName(u"addInventarioBoton")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Maximum)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
         sizePolicy6.setHorizontalStretch(0)
         sizePolicy6.setVerticalStretch(12)
         sizePolicy6.setHeightForWidth(self.addInventarioBoton.sizePolicy().hasHeightForWidth())
@@ -762,8 +761,8 @@ class Ui_MainWindow(object):
         self.labelInvenDis_2.setStyleSheet(u"color: rgb(0, 0, 0);")
         self.stackedWidget.addWidget(self.Inventario_page)
         self.tableWidget.raise_()
-        self.layoutWidget.raise_()
-        self.layoutWidget.raise_()
+        self.layoutWidget2.raise_()
+        self.layoutWidget2.raise_()
         self.labelInvenDis.raise_()
         self.botonTogglePlatos.raise_()
         self.tablaPlatosInv.raise_()
@@ -846,6 +845,60 @@ class Ui_MainWindow(object):
 "QPushButton#botonStatusCaja:hover {\n"
 "  background-color: rgba(0, 0, 0, 0.1);\n"
 "}")
+        self.botonStatusCaja_2 = QPushButton(self.Ajustes_page)
+        self.botonStatusCaja_2.setObjectName(u"botonStatusCaja_2")
+        self.botonStatusCaja_2.setGeometry(QRect(40, 230, 251, 131))
+        self.botonStatusCaja_2.setFont(font5)
+        self.botonStatusCaja_2.setStyleSheet(u"QPushButton#botonStatusCaja_2{\n"
+"\n"
+"  background-color: transparent;\n"
+"  color: inherit; \n"
+"  padding: 10px 20px; \n"
+"  text-align: center;\n"
+"  text-decoration: none;\n"
+"  font-size: 16px;\n"
+"  border-radius: 5px; \n"
+"  border: 2px solid; \n"
+"}\n"
+"QPushButton#botonStatusCaja_2:hover {\n"
+"  background-color: rgba(0, 0, 0, 0.1);\n"
+"}")
+        self.botonStatusCaja_3 = QPushButton(self.Ajustes_page)
+        self.botonStatusCaja_3.setObjectName(u"botonStatusCaja_3")
+        self.botonStatusCaja_3.setGeometry(QRect(330, 230, 251, 131))
+        self.botonStatusCaja_3.setFont(font5)
+        self.botonStatusCaja_3.setStyleSheet(u"QPushButton#botonStatusCaja_3{\n"
+"\n"
+"  background-color: transparent;\n"
+"  color: inherit; \n"
+"  padding: 10px 20px; \n"
+"  text-align: center;\n"
+"  text-decoration: none;\n"
+"  font-size: 16px;\n"
+"  border-radius: 5px; \n"
+"  border: 2px solid; \n"
+"}\n"
+"QPushButton#botonStatusCaja_3:hover {\n"
+"  background-color: rgba(0, 0, 0, 0.1);\n"
+"}")
+        self.botonStatusCaja_4 = QPushButton(self.Ajustes_page)
+        self.botonStatusCaja_4.setObjectName(u"botonStatusCaja_4")
+        self.botonStatusCaja_4.setGeometry(QRect(40, 420, 251, 131))
+        self.botonStatusCaja_4.setFont(font5)
+        self.botonStatusCaja_4.setStyleSheet(u"QPushButton#botonStatusCaja_4{\n"
+"\n"
+"  background-color: transparent;\n"
+"  color: inherit; \n"
+"  padding: 10px 20px; \n"
+"  text-align: center;\n"
+"  text-decoration: none;\n"
+"  font-size: 16px;\n"
+"  border-radius: 5px; \n"
+"  border: 2px solid; \n"
+"}\n"
+"QPushButton#botonStatusCaja_4:hover {\n"
+"  background-color: rgba(0, 0, 0, 0.1);\n"
+"}")
         self.stackedWidget.addWidget(self.Ajustes_page)
 
         self.verticalLayout_5.addWidget(self.stackedWidget)
@@ -885,7 +938,7 @@ class Ui_MainWindow(object):
         self.Exportar_boton_s.toggled.connect(self.actualizarBoton.hide)
         self.Ajustes_boton_s.toggled.connect(self.actualizarBoton.hide)
 
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -895,7 +948,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label_2.setText("")
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"CHIDO", None))
-        self.Dashboard_boton_exp.setText(QCoreApplication.translate("MainWindow", u"Ordenes", None))
+        self.Dashboard_boton_exp.setText(QCoreApplication.translate("MainWindow", u"DashBoard", None))
         self.Inventario_boton_exp.setText(QCoreApplication.translate("MainWindow", u"Inventario", None))
         self.Exportar_boton_exp.setText(QCoreApplication.translate("MainWindow", u"Exportar", None))
         self.Ajustes_boton_exp.setText(QCoreApplication.translate("MainWindow", u"Ajustes", None))
@@ -933,7 +986,7 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"Cantidad", None));
         ___qtablewidgetitem6 = self.tableWidget.horizontalHeaderItem(2)
         ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"Und", None));
-        self.editarInventarioBoton.setText(QCoreApplication.translate("MainWindow", u"A\u00f1adir Cantidad", None))
+        self.editarInventarioBoton.setText(QCoreApplication.translate("MainWindow", u"A\u00f1adir Inventario", None))
         self.addInventarioBoton.setText(QCoreApplication.translate("MainWindow", u"A\u00f1adir Objeto", None))
         self.borrarInventarioBoton.setText(QCoreApplication.translate("MainWindow", u"Borrar Objeto", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Ultima Edicion", None))
@@ -949,5 +1002,8 @@ class Ui_MainWindow(object):
         self.botonGenVentas.setText(QCoreApplication.translate("MainWindow", u"Exportar Ventas", None))
         self.botonAgregarPlatos.setText(QCoreApplication.translate("MainWindow", u"Agregar Platos", None))
         self.botonStatusCaja.setText(QCoreApplication.translate("MainWindow", u"Abrir Caja", None))
+        self.botonStatusCaja_2.setText(QCoreApplication.translate("MainWindow", u"Editar Platos", None))
+        self.botonStatusCaja_3.setText(QCoreApplication.translate("MainWindow", u"Borrar platos", None))
+        self.botonStatusCaja_4.setText(QCoreApplication.translate("MainWindow", u"Enviar registros al correo", None))
     # retranslateUi
 

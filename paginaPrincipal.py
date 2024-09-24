@@ -3,10 +3,11 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QTableWidg
 from control_bd import BaseDatos 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QSizePolicy
-from formularioControl import formularioAIControl, formularioDEControl, formularioREControl, formularioOrden, formularioAddPlato
+from formularioControl import formularioAIControl, formularioDEControl, formularioREControl, formularioOrden, formularioAddPlato, formularioBorrarPlato
 from PySide6.QtGui import QColor, QPalette, QPainter
 from exporControl import exportarControl
 from datetime import datetime
+import envios
 import json
 
 
@@ -31,6 +32,8 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
 
         self.Ajustes_boton_exp.clicked.connect(self.mostrar_ajustes)
         self.Ajustes_boton_s.clicked.connect(self.mostrar_ajustes)
+
+    
 
         self.mostrar_dashboard()
         self.crearTablaOrdenes()
@@ -68,6 +71,9 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
         # Conectores ajustes
         self.botonStatusCaja.clicked.connect(self.cambiar_estado)
         self.botonAgregarPlatos.clicked.connect(self.formularioAddPlato)
+        self.botonStatusCaja_2.clicked.connect(self.editarPlatos)
+        self.botonStatusCaja_3.clicked.connect(self.borrarPlatos)
+        self.botonStatusCaja_4.clicked.connect(self.enviarCorreoRegistros)
 
     def mostrar_dashboard(self):
         self.stackedWidget.setCurrentIndex(0)
@@ -412,3 +418,15 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
         msgBox.setText(mensaje)
         msgBox.setWindowTitle('Error')
         msgBox.exec_()
+
+    def editarPlatos(self):
+        pass
+
+    def borrarPlatos(self):
+        _ = formularioBorrarPlato()
+        _.generarFormulario()
+    
+
+    def enviarCorreoRegistros(self):
+        envios.enviar_email_con_adjunto()
+        QMessageBox.information(None, "Informacion", "Se envio con exito el archivo")

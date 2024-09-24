@@ -187,7 +187,6 @@ class BaseDatos():
         conn.commit()
         conn.close()
         return valores
-
     
     def buscarIngredientes(pista):
         db_path = resource_path("Inventario.db")
@@ -539,6 +538,64 @@ class BaseDatos():
             print(f"Orden registrada exitosamente. ID de orden: {id_orden}")
         except sql.Error as e:
             print(f"Error al registrar la orden: {e}")
+            conn.rollback()
+        finally:
+            conn.close()
+
+
+    @staticmethod
+    def borrarPlato(nombre_plato):
+        db_path = resource_path("Inventario.db")
+        conn = sql.connect(db_path)
+        cursor = conn.cursor()
+
+        try:
+            # Verificar si el plato existe
+            cursor.execute("SELECT COUNT(*) FROM Platos WHERE nombre = ?", (nombre_plato.capitalize(),))
+            exists = cursor.fetchone()[0] > 0
+
+            if not exists:
+                print(f"El platillo '{nombre_plato}' no existe en la base de datos.")
+                return  False
+
+            # Borrar el plato y sus ingredientes
+            cursor.execute("DELETE FROM Platos WHERE nombre = ?", (nombre_plato.capitalize(),))
+            cursor.execute("DELETE FROM PlatoIngredientes WHERE plato_nombre = ?", (nombre_plato.capitalize(),))
+            conn.commit()
+            print(f"Platillo '{nombre_plato}' borrado exitosamente.")
+            return True
+        except sql.Error as e:
+            print(f"Error al borrar el platillo '{nombre_plato}': {e}")
+            conn.rollback()
+
+        finally:
+            conn.close()
+
+
+    @staticmethod
+    def editarPlato(nombre_plato, nuevo_nombre=None, nuevo_precio=None, nuevos_ingredientes=None):
+        db_path = resource_path("Inventario.db")
+        conn = sql.connect(db_path)
+        cursor = conn.cursor()
+        try:
+            if nuevo_nombre:
+                cursor.execute("UPDATE Platos SET nombre = ? WHERE nombre = ?", 
+                               (nuevo_nombre.capitalize(), nombre_plato.capitalize()))
+                cursor.execute("UPDATE PlatoIngredientes SET plato_nombre = ? WHERE plato_nombre = ?", 
+                               (nuevo_nombre.capitalize(), nombre_plato.capitalize()))
+            if nuevo_precio is not None:
+                cursor.execute("UPDATE Platos SET precioUni = ? WHERE nombre = ?", 
+                               (nuevo_precio, (nuevo_nombre or nombre_plato).capitalize()))
+            if nuevos_ingredientes:
+                cursor.execute("DELETE FROM PlatoIngredientes WHERE plato_nombre = ?", 
+                               ((nuevo_nombre or nombre_plato).capitalize(),))
+                for ingrediente, cantidad in nuevos_ingredientes.items():
+                    cursor.execute("INSERT INTO PlatoIngredientes (plato_nombre, ingrediente_nombre, cantidad) VALUES (?, ?, ?)", 
+                                   ((nuevo_nombre or nombre_plato).capitalize(), ingrediente.capitalize(), cantidad))
+            conn.commit()
+            print(f"Platillo '{nombre_plato}' editado exitosamente.")
+        except sql.Error as e:
+            print(f"Error al editar el platillo '{nombre_plato}': {e}")
             conn.rollback()
         finally:
             conn.close()
