@@ -1,9 +1,9 @@
 from paginaPrincipal_ui import Ui_MainWindow
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QTableWidgetItem, QMessageBox, QWidget
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QTableWidgetItem, QMessageBox, QWidget,QDialog
 from control_bd import BaseDatos 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QSizePolicy
-from formularioControl import formularioAIControl, formularioDEControl, formularioREControl, formularioOrden, formularioAddPlato, formularioBorrarPlato
+from formularioControl import formularioAIControl, formularioDEControl, formularioREControl, formularioOrden, formularioAddPlato, formularioBorrarPlato, formularioEditPlato, busquedaEdicionPlato
 from PySide6.QtGui import QColor, QPalette, QPainter
 from exporControl import exportarControl
 from datetime import datetime
@@ -420,7 +420,14 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
         msgBox.exec_()
 
     def editarPlatos(self):
-        pass
+        dialogoBusqueda = busquedaEdicionPlato()
+        dialogoBusqueda.exec_()
+        if dialogoBusqueda.aceptado == True:
+            platoSeleccionado = dialogoBusqueda.plato_seleccionado
+            if platoSeleccionado:
+                formularioEdicion = formularioEditPlato()
+                formularioEdicion.generarFormulario(platoSeleccionado[0])
+
 
     def borrarPlatos(self):
         _ = formularioBorrarPlato()

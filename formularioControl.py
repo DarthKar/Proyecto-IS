@@ -1,11 +1,14 @@
 from formularioAI_ui import Ui_DialogoAddInventario
 from dialogoAgregarPlatos import Ui_AgregarPlato
 from addPlatoAc_ui import Ui_ingredienteCan
+from editarPlato_ui import Ui_ingredienteC
+from dialogoEditarPlato import Ui_EditarPlato
 from formBorrarInv_ui import Ui_BorrarInv
 from formEditarInv_ui import Ui_EditarInv
 from ui_borrarPlato import Ui_borrarPlato
+from buscarParaEditar import Ui_busquedaEdicion
 from dialogoOrden_ui import Ui_orden
-from PySide6.QtWidgets import QDialog, QMessageBox, QTableWidgetItem, QWidget
+from PySide6.QtWidgets import QDialog, QMessageBox, QTableWidgetItem, QWidget, QListWidgetItem
 from control_bd import BaseDatos
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QSizePolicy
@@ -216,6 +219,7 @@ class formularioAddPlato(QDialog,Ui_AgregarPlato):
         self.buttonBox.rejected.connect(self.reje)
         self.botonBusquedaIngrediente.clicked.connect(self.buscarIngrediente)
         self.botonAgregarIngrediente.clicked.connect(self.agregarIngredientes)
+        self.botonRetirarIngrediente.clicked.connect(self.retirarIngrediente)
         bd = BaseDatos.leerIngredientes()
         self.tablaIngredientes.setRowCount(len(bd))
         for _, fila in enumerate(bd):
@@ -259,6 +263,16 @@ class formularioAddPlato(QDialog,Ui_AgregarPlato):
         else: 
             QMessageBox.warning(self,"Error","Debes seleccionar un plato de la tabla")
 
+    def retirarIngrediente(self):
+        indice = self.listReceta.currentRow()
+        if indice != -1:  
+            item = self.listReceta.takeItem(indice)  
+            if item:  
+                QMessageBox.information(self, "Información", f"Ingrente '{item.text()}' retirado correctamente.")
+        else:
+            QMessageBox.warning(self, "Error", "Debes seleccionar un ingrediente de la receta.")
+
+
     def acepac(self):
         cantidad = self.ui.spinboxCantidad.value()
         self.listReceta.addItem(f"{self.nombre}------{cantidad}--{self.medida}")
@@ -288,9 +302,6 @@ class formularioBorrarPlato(QDialog,Ui_borrarPlato):
         self.buscarBotonDE.clicked.connect(self.buscar)
         self.botonesBorrarPlato.accepted.connect(self.acep)
         self.botonesBorrarPlato.rejected.connect(self.reje)
-
-
-
     def acep(self):
         _ = BaseDatos.borrarPlato(self.LineEditBuscarDE.text())
         if _: 
@@ -317,5 +328,140 @@ class formularioBorrarPlato(QDialog,Ui_borrarPlato):
     def generarFormulario(self):
         self.exec_()
 
+class busquedaEdicionPlato(QDialog, Ui_busquedaEdicion):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.botonesBorrarPlato.accepted.connect(self.seleccionarPlato)
+        self.buscarBotonDE.clicked.connect(self.buscarPlato)
+        self.listWidget.itemDoubleClicked.connect(self.seleccionarPlato)
+        self.platoSeleccionado = None
+        self.aceptado = False
+
+    def buscarPlato(self):
+        # Obtener el nombre del plato que se busca
+        nombre = self.LineEditBuscarDE.text().strip()
+
+        if nombre:
+            # Buscar en la base de datos platos que coincidan con el nombre
+            resultados = BaseDatos.buscarEnPlatos(nombre)
+            self.listWidget.clear()
+
+            if resultados:
+                # Asumimos que resultados es una lista de tuplas y tomamos el primer resultado
+                # Puedes modificar esto según la lógica de tu aplicación
+                self.plato_seleccionado = resultados[0]  # Seleccionamos el primer plato encontrado
+                # Obtener la receta del plato seleccionado
+                valores = BaseDatos.obtenerReceta(self.plato_seleccionado[0])  # Asumiendo que el nombre del plato es el primer elemento
+
+                if valores:
+                    for ingrediente, cantidad, unidad in valores:
+                        self.listWidget.addItem(f"{ingrediente} ------ {cantidad} ----- {unidad}")
+                else:
+                    QMessageBox.information(self, "Sin ingredientes", f"No se encontraron ingredientes para el plato '{self.plato_seleccionado[0]}'")
+            else:
+                QMessageBox.warning(self, "Sin resultados", f"No se encontraron platos con el nombre '{nombre}'")
+        
+        self.LineEditBuscarDE.setText(self.plato_seleccionado[0])
+
+    def seleccionarPlato(self):
+        if self.plato_seleccionado:
+            self.aceptado = True
+
+    def obtenerPlatoSeleccionado(self):
+        return self.platoSeleccionado
+
+class formularioEditPlato(QDialog, Ui_EditarPlato):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.tablaIngredientes.verticalHeader().setVisible(False)
+        self.buttonBox.accepted.connect(self.acep)  # Conectar el botón de aceptar para editar el plato
+        self.buttonBox.rejected.connect(self.reje)
+        self.botonBusquedaIngrediente.clicked.connect(self.buscarIngrediente)
+        self.botonAgregarIngrediente.clicked.connect(self.agregarIngredientes)
+        self.botonRetirarIngrediente.clicked.connect(self.retirarIngrediente)
+        # Inicializar variables de diálogo para agregar ingredientes
+        self.form = QDialog()
+        self.ui = Ui_ingredienteCan()
+        self.ui.setupUi(self.form)
+        self.ui.botonesAc.accepted.connect(self.acepac)
+        self.ui.botonesAc.rejected.connect(self.rejecac)
+        self.listaIngredientesTotal = {}
+
+    def generarFormulario(self, nombre_plato):
+        # Rellenar los datos del formulario con el plato a editar
+        self.nombrePlatoIngrediente.setText(nombre_plato)
+        self.nombreAEditar = nombre_plato
+        plato_info = BaseDatos.buscarEnPlatos(nombre_plato)
+        self.precioPlatoIngrediente.setText(str(plato_info[0][1]))
+        ingredientes = BaseDatos.obtenerReceta(nombre_plato)
+        bd = BaseDatos.leerIngredientes()
+        self.listReceta.clear()
+        self.tablaIngredientes.setRowCount(len(bd))
+        for _, fila in enumerate(bd):
+            for __, elemento in enumerate(fila):
+                item = QTableWidgetItem(str(elemento))
+                item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+                self.tablaIngredientes.setItem(_,__,item)
+        self.tablaIngredientes.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.exec_()
+
+    def buscarIngrediente(self):
+        self.tablaIngredientes.clearContents()
+        texto = self.buscadorIngrediente.text()
+        bd = BaseDatos.buscarIngredientes(texto)
+        self.tablaIngredientes.setRowCount(len(bd))
+        for _, fila in enumerate(bd):
+            for __, elemento in enumerate(fila):
+                item = QTableWidgetItem(str(elemento))
+                item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+                self.tablaIngredientes.setItem(_, __, item)
+        self.tablaIngredientes.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+    def agregarIngredientes(self):
+        ingrediente = self.tablaIngredientes.selectedItems()
+
+        if ingrediente:
+            row = ingrediente[0].row()
+            self.nombre = self.tablaIngredientes.item(row, 0).text()
+            self.medida = self.tablaIngredientes.item(row, 1).text()
+            self.ui.nombreIngredienteAc.setText(self.nombre)
+            self.ui.medidaIngredienteAc.setText(self.medida)
+            self.form.exec_()
+        else:
+            QMessageBox.warning(self, "Error", "Debes seleccionar un ingrediente de la tabla")
     
+    def retirarIngrediente(self):
+        indice = self.listReceta.currentRow()
+        if indice != -1:  
+            item = self.listReceta.takeItem(indice)  
+            if item:  
+                QMessageBox.information(self, "Información", f"Ingrente '{item.text()}' retirado correctamente.")
+        else:
+            QMessageBox.warning(self, "Error", "Debes seleccionar un ingrediente de la receta.")
+
+    def acepac(self):
+        cantidad = self.ui.spinboxCantidad.value()
+        self.listReceta.addItem(f"{self.nombre}------{cantidad}--{self.medida}")
+        self.listaIngredientesTotal[self.nombre] = cantidad
+
+    def rejecac(self):
+        QMessageBox.information(self, "Informacion", "La operación se ha cancelado")
+
+    def acep(self):
+        nombrePlato = self.nombreAEditar
+        nuevoNombrePlato = self.nombrePlatoIngrediente.text()
+        precioPlato = self.precioPlatoIngrediente.text()
+        
+        if len(nombrePlato.split()) != 1:
+            QMessageBox.information(self, "Informacion", "Se debe usar _ en lugar de espacios en el nombre del plato")
+        else:
+            if nombrePlato != "" and precioPlato != "":
+                nuevo_nombre = nuevoNombrePlato if nuevoNombrePlato != "" else None
+                nuevo_precio = float(precioPlato) if precioPlato != "" else None
+                BaseDatos.editarPlato(nombrePlato, nuevo_nombre, nuevo_precio, self.listaIngredientesTotal)
+                QMessageBox.information(self, "Informacion", "Se completó la edición del plato")
     
+    def reje(self):
+        pass

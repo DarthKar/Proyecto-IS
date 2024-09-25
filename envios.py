@@ -71,5 +71,5 @@ def enviar_email_con_adjunto():
 
     except Exception as e:
         print(f"Error al enviar el correo: {e}")
-        
+
 
