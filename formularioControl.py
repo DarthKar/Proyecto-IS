@@ -302,6 +302,7 @@ class formularioBorrarPlato(QDialog,Ui_borrarPlato):
         self.buscarBotonDE.clicked.connect(self.buscar)
         self.botonesBorrarPlato.accepted.connect(self.acep)
         self.botonesBorrarPlato.rejected.connect(self.reje)
+        self.plato_seleccionado = None
     def acep(self):
         _ = BaseDatos.borrarPlato(self.LineEditBuscarDE.text())
         if _: 
@@ -312,9 +313,20 @@ class formularioBorrarPlato(QDialog,Ui_borrarPlato):
         QMessageBox.information(self,"Informacion", "Se cancelo la operacion")
 
     def buscar(self):
-        if BaseDatos.existeEnPlatos(self.LineEditBuscarDE.text()):
+        nombre = self.LineEditBuscarDE.text().strip()
+
+        if nombre:
+            # Buscar en la base de datos platos que coincidan con el nombre
+            resultados = BaseDatos.buscarEnPlatos(nombre)
             self.listWidget.clear()
-            valores = BaseDatos.obtenerReceta(self.LineEditBuscarDE.text())
+
+            if resultados:
+                # Asumimos que resultados es una lista de tuplas y tomamos el primer resultado
+                # Puedes modificar esto según la lógica de tu aplicación
+                self.plato_seleccionado = resultados[0]  # Seleccionamos el primer plato encontrado
+                # Obtener la receta del plato seleccionado
+                valores = BaseDatos.obtenerReceta(self.plato_seleccionado[0])  # Asumiendo que el nombre del plato es el primer elemento
+            self.listWidget.clear()
             for _ in valores:
                 nombre = _[0]
                 cantidad = _[1]
