@@ -48,6 +48,7 @@ class paginaPrincipal(QMainWindow, Ui_MainWindow):
 
         # Logica Boton Actualizar
         self.actualizarBoton.clicked.connect(self.refrescarTabla)
+        self.actualizarBoton.clicked.connect(self.crearTablaPlatosInv)
 
         # Logica conector inventario
         self.addInventarioBoton.clicked.connect(self.formularioAddInv)

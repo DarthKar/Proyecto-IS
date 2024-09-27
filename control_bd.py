@@ -327,7 +327,7 @@ class BaseDatos():
 
         try:
             # Insertar el plato en la tabla Platos
-            cursor.execute("INSERT INTO Platos (nombre, precioUni) VALUES (?, ?)", (plato, precio))
+            cursor.execute("INSERT INTO Platos (nombre, precioUni) VALUES (?, ?)", (plato.capitalize(), precio))
 
             for ingrediente, cantidad in ingredientes.items():
                 # Verificar si la combinación ya existe
@@ -504,7 +504,7 @@ class BaseDatos():
                    FROM PlatoIngredientes pi
                    JOIN Inventario i ON UPPER(pi.ingrediente_nombre) = UPPER(i.nombre)
                    WHERE UPPER(pi.plato_nombre) = UPPER(?)""",
-                (plato_nombre.upper(),)
+                (plato_nombre.capitalize(),)
             )
             receta = cursor.fetchall()
             conn.commit()
@@ -544,32 +544,35 @@ class BaseDatos():
 
 
     @staticmethod
+    @staticmethod
     def borrarPlato(nombre_plato):
         db_path = resource_path("Inventario.db")
         conn = sql.connect(db_path)
         cursor = conn.cursor()
-
+    
         try:
-            # Verificar si el plato existe
-            cursor.execute("SELECT COUNT(*) FROM Platos WHERE nombre = ?", (nombre_plato.capitalize(),))
+            # Verificar si el plato existe, ignorando mayúsculas y minúsculas
+            cursor.execute("SELECT COUNT(*) FROM Platos WHERE UPPER(nombre) = UPPER(?)", (nombre_plato,))
             exists = cursor.fetchone()[0] > 0
-
+    
             if not exists:
                 print(f"El platillo '{nombre_plato}' no existe en la base de datos.")
-                return  False
-
+                return False
+    
             # Borrar el plato y sus ingredientes
-            cursor.execute("DELETE FROM Platos WHERE nombre = ?", (nombre_plato.capitalize(),))
-            cursor.execute("DELETE FROM PlatoIngredientes WHERE plato_nombre = ?", (nombre_plato.capitalize(),))
+            cursor.execute("DELETE FROM Platos WHERE UPPER(nombre) = UPPER(?)", (nombre_plato,))
+            cursor.execute("DELETE FROM PlatoIngredientes WHERE UPPER(plato_nombre) = UPPER(?)", (nombre_plato,))
             conn.commit()
             print(f"Platillo '{nombre_plato}' borrado exitosamente.")
             return True
         except sql.Error as e:
             print(f"Error al borrar el platillo '{nombre_plato}': {e}")
             conn.rollback()
-
+    
         finally:
             conn.close()
+    
+        
 
 
     @staticmethod

@@ -304,11 +304,11 @@ class formularioBorrarPlato(QDialog,Ui_borrarPlato):
         self.botonesBorrarPlato.rejected.connect(self.reje)
         self.plato_seleccionado = None
     def acep(self):
-        _ = BaseDatos.borrarPlato(self.LineEditBuscarDE.text())
+        _ = BaseDatos.borrarPlato(self.plato_seleccionado[0])
         if _: 
             QMessageBox.information(self,"Informacion",f"Se borro {self.LineEditBuscarDE.text()} exitosamente")
         else:
-            QMessageBox.information(self,"Informacion",f"El Plato '{self.LineEditBuscarDE.text()}' no existe en la base de datos")
+            QMessageBox.information(self,"Informacion",f"El Plato '{self.LineEditBuscarDE.text()}' es mera mierda")
     def reje(self):
         QMessageBox.information(self,"Informacion", "Se cancelo la operacion")
 
